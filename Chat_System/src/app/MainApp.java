@@ -1,8 +1,46 @@
-import user.User;
+package app;
+import java.io.IOException;
+
 import chatNI.ChatNI;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import user.User;
 
 
-public class Test {
+public class MainApp extends Application {
+	
+	private Stage primaryStage;
+    private BorderPane rootLayout;
+	
+	/**
+     * Initializes the root layout.
+     */
+    public void initRootLayout() {
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
+            rootLayout = (BorderPane) loader.load();
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(rootLayout);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Chat System - Olivier et Dorian");
+
+        initRootLayout();
+    }
 
 	/**
 	 * @param args
@@ -39,6 +77,7 @@ public class Test {
 		
 		User user = new User("Régis");
 		ChatNI chat = new ChatNI(user);
+		launch(args);
 	}
 
 }
