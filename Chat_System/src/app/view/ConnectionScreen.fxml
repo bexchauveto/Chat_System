@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="271.0" layoutY="131.0" text="Nickname:" />
+      <Button layoutX="270.0" layoutY="255.0" mnemonicParsing="false" text="Connect" />
+      <TextField layoutX="220.0" layoutY="165.0" />
+   </children>
+</AnchorPane>
