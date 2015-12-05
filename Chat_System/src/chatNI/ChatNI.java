@@ -39,6 +39,7 @@ public class ChatNI implements Runnable {
 		new Thread(this.udpReceiver).start();
 		new Thread(this.tcpServer).start();
 		byte [] bc = {(byte)255,(byte)255,(byte)255,(byte)255};
+		byte [] ip = {(byte)192,(byte)168,(byte)43,(byte)177};
 		try {
 			this.udpSender.sendHello(InetAddress.getByAddress(bc), this.user.getNickname(), true);
 			//this.udpSender.sendHello(InetAddress.getByName("localhost"), this.user.getNickname(), true);
@@ -76,6 +77,7 @@ public class ChatNI implements Runnable {
 					System.out.println(messageHello.getNickName());
 					if (messageHello.isReqReply()) {
 						this.udpSender.sendHello(messageCourantWithIP.getIp(), this.user.getNickname(), false);
+						System.out.println("lol");
 					}
 					break;
 				case BYEMESSAGERECEIVED:
