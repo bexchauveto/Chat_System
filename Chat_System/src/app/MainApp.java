@@ -1,11 +1,11 @@
 package app;
 import java.io.IOException;
 
+import app.view.ConnectionScreenController;
 import chatNI.ChatNI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -48,6 +48,11 @@ public class MainApp extends Application {
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(connectionOverview);
+            
+         // Give the controller access to the main app.
+        ConnectionScreenController controller = loader.getController();
+        controller.setMainApp(this);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
