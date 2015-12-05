@@ -11,12 +11,12 @@ public class Message {
 
 	public Message() {
 		this.type = -1;
-		this.setDateRecption(new Date());
+		this.setDateRecption(LocalDate.now());
 	}
 
 	public Message(int type) {
 		this.type = type;
-		this.setDateRecption(new Date());
+		this.setDateRecption(LocalDate.now());
 	}
 
 	public int getType() {
