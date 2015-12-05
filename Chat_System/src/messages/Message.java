@@ -2,21 +2,25 @@ package messages;
 
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.json.JSONObject;
 
 public class Message {
 	private int type;
-	private LocalDate dateRecption;
+	private LocalDate dateReception;
+	private LocalTime timeReception;
 
 	public Message() {
 		this.type = -1;
-		this.setDateRecption(LocalDate.now());
+		this.setDateReception(LocalDate.now());
+		this.setTimeReception(LocalTime.now());
 	}
 
 	public Message(int type) {
 		this.type = type;
-		this.setDateRecption(LocalDate.now());
+		this.setDateReception(LocalDate.now());
+		this.setTimeReception(LocalTime.now());
 	}
 
 	public int getType() {
@@ -33,12 +37,20 @@ public class Message {
 		this.type = message.getInt("type");
 	}
 
-	public LocalDate getDateRecption() {
-		return dateRecption;
+	public LocalDate getDateReception() {
+		return dateReception;
 	}
 
-	public void setDateRecption(LocalDate dateRecption) {
-		this.dateRecption = dateRecption;
+	public void setDateReception(LocalDate dateReception) {
+		this.dateReception = dateReception;
+	}
+
+	public LocalTime getTimeReception() {
+		return timeReception;
+	}
+
+	public void setTimeReception(LocalTime timeReception) {
+		this.timeReception = timeReception;
 	}
 
 }
