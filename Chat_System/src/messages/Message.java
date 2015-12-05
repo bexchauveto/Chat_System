@@ -1,13 +1,13 @@
 package messages;
 
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.json.JSONObject;
 
 public class Message {
 	private int type;
-	private Date dateRecption;
+	private LocalDate dateRecption;
 
 	public Message() {
 		this.type = -1;
@@ -33,11 +33,11 @@ public class Message {
 		this.type = message.getInt("type");
 	}
 
-	public Date getDateRecption() {
+	public LocalDate getDateRecption() {
 		return dateRecption;
 	}
 
-	public void setDateRecption(Date dateRecption) {
+	public void setDateRecption(LocalDate dateRecption) {
 		this.dateRecption = dateRecption;
 	}
 

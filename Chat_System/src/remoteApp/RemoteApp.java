@@ -1,6 +1,8 @@
 package remoteApp;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+
 import messages.*;
 
 public class RemoteApp {
@@ -11,7 +13,7 @@ public class RemoteApp {
 	public RemoteApp(InetAddress ip, String nickname) {
 		this.ip = ip;
 		this.nickname = nickname;
-		this.listeMessage =  new ArrayList<Message>();
+		this.setListeMessage(new ArrayList<Message>());
 	}
 
 	public InetAddress getIp() {
@@ -20,6 +22,14 @@ public class RemoteApp {
 
 	public String getNickname() {
 		return nickname;
+	}
+
+	public ArrayList<Message> getListeMessage() {
+		return listeMessage;
+	}
+
+	public void setListeMessage(ArrayList<Message> listeMessage) {
+		this.listeMessage = listeMessage;
 	}
 
 }
