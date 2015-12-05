@@ -1,14 +1,20 @@
 package app;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
+import app.view.ChatScreenController;
 import app.view.ConnectionScreenController;
 import chatNI.ChatNI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import remoteApp.RemoteApp;
 import user.User;
 
 
@@ -16,7 +22,13 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
     private BorderPane rootLayout;
-	
+    private User user;
+    private ChatNI chat;
+    
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	/**
      * Initializes the root layout.
      */
@@ -44,15 +56,38 @@ public class MainApp extends Application {
             // Load connection overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ConnectionScreen.fxml"));
-            GridPane connectionOverview = (GridPane) loader.load();
+            GridPane connectionScreen = (GridPane) loader.load();
 
-            // Set person overview into the center of root layout.
-            rootLayout.setCenter(connectionOverview);
+			 // Give the controller access to the main app.
+		    ConnectionScreenController controller = loader.getController();
+		    controller.setMainApp(this);
+			    
+			 // Set person overview into the center of root layout.
+			rootLayout.setCenter(connectionScreen);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Shows the person overview inside the root layout.
+     */
+    public void showChatScreen() {
+        try {
+            // Load connection overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/ChatScreen.fxml"));
+            SplitPane chatScreen = (SplitPane) loader.load();
             
-         // Give the controller access to the main app.
-        ConnectionScreenController controller = loader.getController();
-        controller.setMainApp(this);
+			 // Give the controller access to the main app.
+		    ChatScreenController controller = loader.getController();
+		    controller.setMainApp(this);
+			    
+			 // Set person overview into the center of root layout.
+			rootLayout.setCenter(chatScreen);
 
+			this.chat.addRemoteAppsListener(controller);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,9 +135,29 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}*/
 		
-		User user = new User("Régis");
-		ChatNI chat = new ChatNI(user);
+		
+		
 		launch(args);
 	}
-
+	
+	// Appelé par handleConnection() dans ConnectionScreenController quand on appuie sur le bouton de connexion
+	public void connect() {
+		this.chat = new ChatNI(this.user);
+		this.showChatScreen();
+		
+		//Simulation de connection et déconnection pour l'affichage de la liste
+		ArrayList<RemoteApp> lol = new ArrayList<RemoteApp>();
+		try {
+			lol.add(new RemoteApp(InetAddress.getByName("localhost"), "Georges"));
+			this.chat.setRemoteUsers(lol);
+			
+			/*
+			 * Permet de voir que ça n'apparait pas dans la liste (bon meêm thread donc on le vois pas en direct mais osef
+			 * Thread.sleep(3000);
+			this.chat.removeRemoteUsers();*/
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

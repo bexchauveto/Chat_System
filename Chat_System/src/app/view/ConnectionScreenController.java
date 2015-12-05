@@ -4,6 +4,7 @@ import app.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import user.User;
 
 public class ConnectionScreenController {
 	@FXML
@@ -19,6 +20,7 @@ public class ConnectionScreenController {
      * The constructor is called before the initialize() method.
      */
     public ConnectionScreenController() {
+
     }
 
 	/**
@@ -40,5 +42,22 @@ public class ConnectionScreenController {
 
 		// Add observable list data to the table
 		//personTable.setItems(mainApp.getPersonData());
+	}
+	
+	/**
+	 * Called when the user clicks on the delete button.
+	 */
+	@FXML
+	private void handleConnection() {
+		String pseudo = this.nickName.getText();
+		if (pseudo != null && !pseudo.equals("")) {
+			User user = new User(pseudo);
+			this.mainApp.setUser(user);
+			//Un fois que l'utilisateur a été créé dans la main ap, on peut appeler la méthode de connection
+			this.mainApp.connect();
+		}
+		else {
+			
+		}
 	}
 }
