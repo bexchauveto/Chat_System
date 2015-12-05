@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import user.User;
 
@@ -40,13 +41,13 @@ public class MainApp extends Application {
      */
     public void showConnectionScreen() {
         try {
-            // Load person overview.
+            // Load connection overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ConnectionScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            GridPane connectionOverview = (GridPane) loader.load();
 
             // Set person overview into the center of root layout.
-            rootLayout.setCenter(personOverview);
+            rootLayout.setCenter(connectionOverview);
         } catch (IOException e) {
             e.printStackTrace();
         }
