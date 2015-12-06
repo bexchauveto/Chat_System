@@ -24,6 +24,10 @@ public class RemoteApp {
 		return nickname;
 	}
 
+	public void setNickName(String nickName){
+		this.nickname = nickName;
+	}
+
 	public ArrayList<Message> getListeMessage() {
 		return listeMessage;
 	}
@@ -36,7 +40,7 @@ public class RemoteApp {
 	public String toString() {
 		return "RemoteApp [ip=" + ip + ", nickname=" + nickname + ", listeMessage=" + listeMessage + "]";
 	}
-	
-	
+
+
 
 }

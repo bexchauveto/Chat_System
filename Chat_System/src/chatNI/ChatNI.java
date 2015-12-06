@@ -65,6 +65,15 @@ public class ChatNI implements Runnable, NewMessageListener {
         }
 	}
 
+    public boolean alreadyExist(RemoteApp remote){
+    	for(int i = 0; i < this.remoteUsers.size(); i++){
+    		if(this.remoteUsers.get(i).getNickname().equals(remote.getNickname())){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+
 	public ChatNI(User user) {
 		this.user = user;
 		this.remoteUsers = new ArrayList<RemoteApp>();
@@ -137,6 +146,9 @@ public class ChatNI implements Runnable, NewMessageListener {
 		case HELLOMESSAGERECEIVED:
 			MessageHello messageHello = (MessageHello) messageCourantWithIP.getMessage();
 			RemoteApp ra = new RemoteApp(messageCourantWithIP.getIp(), messageHello.getNickName());
+			if(this.alreadyExist(ra)){
+				ra.setNickName(ra.getNickname()+" - 1");
+			}
 			this.remoteUsers.add(ra);
 			this.oneMoreUser(ra);
 			System.out.println(this.remoteUsers);
