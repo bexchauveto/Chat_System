@@ -2,7 +2,7 @@ package user;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Message;
+import messages.Message;
 
 import messages.MessageWithRemoteApp;
 import remoteApp.RemoteApp;
@@ -32,7 +32,7 @@ public class User {
 		ArrayList<Message> messages = new ArrayList<Message>();
 		for(int i = 0; i < this.messageList.size(); i++) {
 			if(this.messageList.get(i).getRemoteUser().equals(remote)){
-				messages.add((Message) this.messageList.get(i).getMess());
+				messages.add(this.messageList.get(i).getMess());
 			}
 		}
 		return messages;
