@@ -7,6 +7,10 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.charset.Charset;
 
+import javax.swing.event.EventListenerList;
+
+import org.json.JSONObject;
+
 import messages.FileRequest;
 import messages.FileRequestReply;
 import messages.Message;
@@ -14,8 +18,6 @@ import messages.MessageBye;
 import messages.MessageHello;
 import messages.MessageNormal;
 import messages.MessageWithIP;
-
-import org.json.JSONObject;
 
 public class UDPReceiver implements Runnable {
 	
@@ -28,6 +30,28 @@ public class UDPReceiver implements Runnable {
 	private static final int NORMALMESSAGERECEIVED = 2;
 	private static final int FILEREQUESTMESSAGERECEIVED = 3;
 	private static final int FILEREQUESTREPLYMESSAGERECEIVED = 4;
+	
+	
+	// un seul objet pour tous les types d'écouteurs
+    private final EventListenerList listeners = new EventListenerList();
+
+	public void addNewMessageListener(NewMessageListener listener) {
+        this.listeners.add(NewMessageListener.class, listener);
+    }
+ 
+    public void removeNewMessageListener(NewMessageListener listener) {
+        this.listeners.remove(NewMessageListener.class, listener);
+    }
+    
+    public NewMessageListener[] getNewMessageListeners() {
+        return listeners.getListeners(NewMessageListener.class);
+    }
+    
+    protected void newMessageReceived() {
+		for(NewMessageListener listener : getNewMessageListeners()) {
+            listener.aMessageHasBeenReceived();
+        }
+	}
 
 	public UDPReceiver() {
 		try {
@@ -72,6 +96,8 @@ public class UDPReceiver implements Runnable {
 				
 				switch (typeMessageRecu) {
 				case HELLOMESSAGERECEIVED:
+					System.out.println("J'ai reçu un hello message dans UDPReceiver qui ressemble à ça : " + jsonmes);
+					System.out.println("index du message dans le tableau : " + index);
 					this.messageRecu = new MessageHello();
 					break;
 				case BYEMESSAGERECEIVED:
@@ -91,10 +117,11 @@ public class UDPReceiver implements Runnable {
 					break;
 				}
 				//System.out.println(this.socket.getInetAddress());
-				this.messagewithip[index] = new MessageWithIP(messageReceived.getAddress(), this.messageRecu);
-				index = (index++)%10;
-				this.setReceptionMessage(true);
 				messageRecu.JSONToMessage(jsonmes);
+				this.messagewithip[index] = new MessageWithIP(messageReceived.getAddress(), this.messageRecu);
+				index = (index+1)%10;
+				this.setReceptionMessage(true);
+				this.newMessageReceived();
 				//System.out.println(messageRecu);
 			}
 		} catch (IOException e) {

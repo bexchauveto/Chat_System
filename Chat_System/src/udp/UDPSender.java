@@ -40,6 +40,7 @@ public class UDPSender {
 	}
 	
 	public void sendHello(InetAddress iptosend, String nickName, boolean reqReply){
+		System.err.println("Je suis dans sendHello");
 		Message mes = new MessageHello(nickName, reqReply);
 		this.sendMess(mes, iptosend);
 	}
