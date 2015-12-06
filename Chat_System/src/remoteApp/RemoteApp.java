@@ -32,4 +32,11 @@ public class RemoteApp {
 		this.listeMessage = listeMessage;
 	}
 
+	@Override
+	public String toString() {
+		return "RemoteApp [ip=" + ip + ", nickname=" + nickname + ", listeMessage=" + listeMessage + "]";
+	}
+	
+	
+
 }

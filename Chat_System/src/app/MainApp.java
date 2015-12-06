@@ -101,6 +101,11 @@ public class MainApp extends Application {
         this.initRootLayout();
         this.showConnectionScreen();
     }
+    
+    @Override
+    public void stop() {
+    	this.chat.disconnect();
+    }
 
 	/**
 	 * @param args

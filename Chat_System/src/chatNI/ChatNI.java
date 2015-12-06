@@ -88,6 +88,12 @@ public class ChatNI implements Runnable, NewMessageListener {
 			e.printStackTrace();
 		}
 	}
+	
+	public void disconnect() {
+		for(int i = 0; i < this.remoteUsers.size(); i++) {
+			this.udpSender.sendBye(this.remoteUsers.get(i).getIp());
+		}
+	}
 
 	public int getIndexRemoteAppByIP(InetAddress ip) {
 		int index = -1;
@@ -105,16 +111,9 @@ public class ChatNI implements Runnable, NewMessageListener {
 		
 		while(true) {
 			//System.out.println(this.udpReceiver.isReceptionMessage());
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("");
 		}
 	}
-	
-	
 	
 	
 	MessageWithIP messageCourantWithIP;
@@ -134,6 +133,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 			RemoteApp ra = new RemoteApp(messageCourantWithIP.getIp(), messageHello.getNickName());
 			this.remoteUsers.add(ra);
 			this.oneMoreUser(ra);
+			System.out.println(this.remoteUsers);
 			if (!messageHello.isReqReply()) {
 				System.out.println(messageHello.getNickName() + " répond à ma connexion");
 			}
