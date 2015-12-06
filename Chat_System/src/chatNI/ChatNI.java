@@ -8,6 +8,7 @@ import javax.swing.event.EventListenerList;
 import messages.MessageHello;
 import messages.MessageNormal;
 import messages.MessageWithIP;
+import messages.MessageWithRemoteApp;
 import remoteApp.RemoteApp;
 import tcp.TCPServer;
 import udp.NewMessageListener;
@@ -95,6 +96,11 @@ public class ChatNI implements Runnable, NewMessageListener {
 		}
 	}
 
+	public void sendMessage(String mess, RemoteApp remote) {
+		this.udpSender.sendMessageNormal(remote.getIp(), mess);
+		this.user.getMessageList().add(new MessageWithRemoteApp(new MessageNormal(mess), remote));
+	}
+
 	public int getIndexRemoteAppByIP(InetAddress ip) {
 		int index = -1;
 		for(int i = 0; i < this.remoteUsers.size(); i++) {
@@ -111,7 +117,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 
 		while(true) {
 			//System.out.println(this.udpReceiver.isReceptionMessage());
-			System.out.println("");
+			//System.out.println("");
 		}
 	}
 
