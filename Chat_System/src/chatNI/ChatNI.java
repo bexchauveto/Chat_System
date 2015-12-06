@@ -29,7 +29,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 	private static final int FILEREQUESTREPLYMESSAGERECEIVED = 4;
 	// un seul objet pour tous les types d'écouteurs
     private final EventListenerList listeners = new EventListenerList();
-    
+
     // Pour la simulation d'affichagede la liste d'utilisateurs, à enlever par la suite
     /*public void setRemoteUsers(ArrayList<RemoteApp> remoteUsers) {
 		this.remoteUsers = remoteUsers;
@@ -43,27 +43,27 @@ public class ChatNI implements Runnable, NewMessageListener {
 	public void addRemoteAppsListener(RemoteAppsListener listener) {
         this.listeners.add(RemoteAppsListener.class, listener);
     }
- 
+
     public void removeRemoteAppsListener(RemoteAppsListener listener) {
         this.listeners.remove(RemoteAppsListener.class, listener);
     }
-    
+
     public RemoteAppsListener[] getRemoteAppsListeners() {
         return listeners.getListeners(RemoteAppsListener.class);
     }
-    
+
     protected void oneMoreUser(RemoteApp user) {
 		for(RemoteAppsListener listener : getRemoteAppsListeners()) {
             listener.aUserHasConnected(user);
         }
 	}
-    
+
     protected void oneLessUser(RemoteApp user) {
 		for(RemoteAppsListener listener : getRemoteAppsListeners()) {
             listener.aUserHasDisconnected(user);
         }
 	}
-	
+
 	public ChatNI(User user) {
 		this.user = user;
 		this.remoteUsers = new ArrayList<RemoteApp>();
@@ -71,7 +71,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 		this.connect();
 		new Thread(this).start();
 	}
-			
+
 	public void connect() {
 		this.udpSender = new UDPSender();
 		this.udpReceiver = new UDPReceiver();
@@ -88,7 +88,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void disconnect() {
 		for(int i = 0; i < this.remoteUsers.size(); i++) {
 			this.udpSender.sendBye(this.remoteUsers.get(i).getIp());
@@ -105,20 +105,20 @@ public class ChatNI implements Runnable, NewMessageListener {
 		}
 		return index;
 	}
-	
+
 	@Override
 	public void run() {
-		
+
 		while(true) {
 			//System.out.println(this.udpReceiver.isReceptionMessage());
 			System.out.println("");
 		}
 	}
-	
-	
+
+
 	MessageWithIP messageCourantWithIP;
 	int indexMessageWithIP = 0;
-	
+
 	@Override
 	public void aMessageHasBeenReceived() {
 		//System.out.println(this.udpReceiver.isReceptionMessage());
@@ -143,10 +143,10 @@ public class ChatNI implements Runnable, NewMessageListener {
 			}
 			break;
 		case BYEMESSAGERECEIVED:
-			int indice = this.getIndexRemoteAppByIP(messageCourantWithIP.getIp());
-			if (indice != -1) {
-				this.oneLessUser(this.remoteUsers.get(indice));
-				this.remoteUsers.remove(indice);
+			int indiceBye = this.getIndexRemoteAppByIP(messageCourantWithIP.getIp());
+			if (indiceBye != -1) {
+				this.oneLessUser(this.remoteUsers.get(indiceBye));
+				this.remoteUsers.remove(indiceBye);
 			}
 			else {
 				//TODO Soit exception, soit message erreur sur le GUI
@@ -155,7 +155,14 @@ public class ChatNI implements Runnable, NewMessageListener {
 		case NORMALMESSAGERECEIVED:
 				//TODO L'afficher dans le GUI. On retrouvera le nickname de l'utilisateur sur lequel afficher le message à l'aide de remoteUsers.
 				MessageNormal messageNormal = (MessageNormal) messageCourantWithIP.getMessage();
-				System.out.println(messageNormal.getMessage());
+				int indiceNor = this.getIndexRemoteAppByIP(messageCourantWithIP.getIp());
+				if (indiceNor != -1) {
+					this.remoteUsers.get(indiceNor).getListeMessage().add(messageNormal);
+				}
+				else {
+					//TODO Soit exception, soit message erreur sur le GUI
+				}
+				//System.out.println(messageNormal.getMessage());
 			break;
 		case FILEREQUESTMESSAGERECEIVED:
 			// TODO Afficher la popup avec le nom du fichier demandant s'il accepte ou non le fichier à télécharger.
