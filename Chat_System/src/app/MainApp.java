@@ -151,7 +151,7 @@ public class MainApp extends Application {
 		this.showChatScreen();
 		
 		//Simulation de connection et déconnection pour l'affichage de la liste
-		ArrayList<RemoteApp> lol = new ArrayList<RemoteApp>();
+		/*ArrayList<RemoteApp> lol = new ArrayList<RemoteApp>();
 		try {
 			lol.add(new RemoteApp(InetAddress.getByName("localhost"), "Georges"));
 			this.chat.setRemoteUsers(lol);
@@ -160,9 +160,9 @@ public class MainApp extends Application {
 			 * Permet de voir que ça n'apparait pas dans la liste (bon meêm thread donc on le vois pas en direct mais osef
 			 * Thread.sleep(3000);
 			this.chat.removeRemoteUsers();*/
-		} catch (UnknownHostException e) {
+		/*} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 }
