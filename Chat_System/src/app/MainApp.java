@@ -1,5 +1,6 @@
 package app;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import app.view.ChatScreenController;
 import app.view.ConnectionScreenController;
@@ -11,6 +12,8 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import messages.Message;
+import remoteApp.RemoteApp;
 import user.User;
 
 
@@ -160,5 +163,13 @@ public class MainApp extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+	}
+	
+	public void sendMessage(String mess, RemoteApp remote) {
+		this.chat.sendMessage(mess, remote);
+	}
+	
+	public ArrayList<Message> getAllMessageConversation(RemoteApp remote) {
+		return this.user.getAllMessageConversation(remote);
 	}
 }

@@ -14,6 +14,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import messages.Message;
 import remoteApp.RemoteApp;
 
 public class ChatScreenController implements RemoteAppsListener {
@@ -83,6 +84,7 @@ public class ChatScreenController implements RemoteAppsListener {
 		return ret;
 	}
 	
+	
 	@FXML
 	public void handleMouseClick(MouseEvent arg0) {
 		String name = this.usersList.getSelectionModel().getSelectedItem();
@@ -98,10 +100,20 @@ public class ChatScreenController implements RemoteAppsListener {
 				
 				// Give the controller access to the chat screen controller.
 			    CommunicationTabController controller = loader.getController();
+			    
+			  //On utilise le fait que les deux array list aient la même indexation pseudo/remoteApp
+			    for (int i = 0; i<this.listePseudos.size();i++) {
+			    	if (this.listePseudos.get(i).equals(name)) {
+			    		controller.setRemoteAppCorrespondant(this.remoteApps.get(i));
+			    	}
+			    }
+			    
 			    controller.setChatScreenCtrlr(this);
 				
 				t.setContent(tabPane);
 				this.tabsList.add(t);
+				
+				
 				//t.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
 				this.tabPane.getTabs().add(t);
 			    System.out.println("clicked on " + this.usersList.getSelectionModel().getSelectedItem());
@@ -110,5 +122,13 @@ public class ChatScreenController implements RemoteAppsListener {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void sendMessage(String mess, RemoteApp remote) {
+		this.mainApp.sendMessage(mess, remote);
+	}
+	
+	public ArrayList<Message> getAllMessageConversation(RemoteApp remote) {
+		return this.mainApp.getAllMessageConversation(remote);
 	}
 }
