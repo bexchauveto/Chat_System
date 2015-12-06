@@ -7,11 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import messages.Message;
-import messages.MessageNormal;
+import remoteApp.NewMessageNormalReceivedListener;
 import remoteApp.RemoteApp;
-import udp.NewMessageListener;
 
-public class CommunicationTabController implements NewMessageListener {
+public class CommunicationTabController implements NewMessageNormalReceivedListener {
 	private RemoteApp remoteAppCorrespondant;
 	@FXML
 	private TextArea displayingArea;
@@ -51,6 +50,7 @@ public class CommunicationTabController implements NewMessageListener {
 	
 	public void setRemoteAppCorrespondant(RemoteApp ra) {
 		this.remoteAppCorrespondant = ra;
+		this.remoteAppCorrespondant.addNewMessageNormalReceivedListener(this);
 	}
 	
 	/**
@@ -77,15 +77,13 @@ public class CommunicationTabController implements NewMessageListener {
 	}
 
 	@Override
-	public void aMessageHasBeenReceived() {
-		ArrayList<Message> historique = this.chatScreenCtrlr.getAllMessageConversation(this.remoteAppCorrespondant);
-		String text = ((MessageNormal)(historique.get(historique.size()))).getMessage();
+	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, String message) {
 		String texteDejaAffiche = this.displayingArea.getText();
 		if (texteDejaAffiche == null || texteDejaAffiche.equals("")) {
-			this.displayingArea.setText(text);
+			this.displayingArea.setText(message);
 		}
 		else {
-			this.displayingArea.setText(texteDejaAffiche + "\n" + text);
+			this.displayingArea.setText(texteDejaAffiche + "\n" + message);
 		}
 	}
 	

@@ -178,11 +178,12 @@ public class ChatNI implements Runnable, NewMessageListener {
 				int indiceNor = this.getIndexRemoteAppByIP(messageCourantWithIP.getIp());
 				if (indiceNor != -1) {
 					this.remoteUsers.get(indiceNor).getListeMessage().add(messageNormal);
+					this.remoteUsers.get(indiceNor).nouveauMessageAjoute(messageNormal);
 				}
 				else {
 					//TODO Soit exception, soit message erreur sur le GUI
 				}
-				//System.out.println(messageNormal.getMessage());
+				System.out.println(messageNormal.getMessage());
 			break;
 		case FILEREQUESTMESSAGERECEIVED:
 			// TODO Afficher la popup avec le nom du fichier demandant s'il accepte ou non le fichier à télécharger.

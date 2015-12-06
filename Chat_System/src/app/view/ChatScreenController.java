@@ -15,9 +15,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import messages.Message;
+import remoteApp.NewMessageNormalReceivedListener;
 import remoteApp.RemoteApp;
+import udp.NewMessageListener;
 
-public class ChatScreenController implements RemoteAppsListener {
+public class ChatScreenController implements RemoteAppsListener, NewMessageNormalReceivedListener {
 	private ObservableList<String> listePseudos = FXCollections.observableArrayList();
 	private ArrayList<RemoteApp> remoteApps;
 	private ArrayList<Tab> tabsList;
@@ -61,6 +63,7 @@ public class ChatScreenController implements RemoteAppsListener {
 
 	@Override
 	public void aUserHasConnected(RemoteApp user) {
+		user.addNewMessageNormalReceivedListener(this);
 		this.remoteApps.add(user);
 		System.err.println(user.getNickname() + " s'est connecté");
 		this.listePseudos.add(user.getNickname());
@@ -69,6 +72,7 @@ public class ChatScreenController implements RemoteAppsListener {
 
 	@Override
 	public void aUserHasDisconnected(RemoteApp user) {
+		user.removeNewMessageNormalReceivedListener(this);
 		this.remoteApps.remove(user);
 		this.listePseudos.remove(user.getNickname());
 		this.usersList.setItems(listePseudos);
@@ -130,5 +134,44 @@ public class ChatScreenController implements RemoteAppsListener {
 	
 	public ArrayList<Message> getAllMessageConversation(RemoteApp remote) {
 		return this.mainApp.getAllMessageConversation(remote);
+	}
+
+	@Override
+	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, String message) {
+		if (!this.aTabWithThisNameAlreadyExists(ra.getNickname())) {
+			try {
+				Tab t = new Tab();
+				t.setText(ra.getNickname());
+				
+				 FXMLLoader loader = new FXMLLoader();
+		         loader.setLocation(MainApp.class.getResource("view/CommunicationTab.fxml"));
+		         AnchorPane tabPane;
+				tabPane = (AnchorPane) loader.load();
+				
+				// Give the controller access to the chat screen controller.
+			    CommunicationTabController controller = loader.getController();
+			    
+			  //On utilise le fait que les deux array list aient la même indexation pseudo/remoteApp
+			    for (int i = 0; i<this.listePseudos.size();i++) {
+			    	if (this.listePseudos.get(i).equals(ra.getNickname())) {
+			    		controller.setRemoteAppCorrespondant(this.remoteApps.get(i));
+			    	}
+			    }
+			    
+			    controller.setChatScreenCtrlr(this);
+				
+				t.setContent(tabPane);
+				this.tabsList.add(t);
+				
+				
+				//t.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
+				this.tabPane.getTabs().add(t);
+			    System.out.println("clicked on " + this.usersList.getSelectionModel().getSelectedItem());
+			} catch (IOException e) {
+				System.err.println("Could not load the communication tab FXML file !");
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }
