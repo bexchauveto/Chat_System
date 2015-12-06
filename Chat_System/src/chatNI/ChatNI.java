@@ -126,7 +126,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 
 		while(true) {
 			//System.out.println(this.udpReceiver.isReceptionMessage());
-			System.out.println("");
+			//System.out.println("");
 		}
 	}
 
@@ -146,18 +146,20 @@ public class ChatNI implements Runnable, NewMessageListener {
 		case HELLOMESSAGERECEIVED:
 			MessageHello messageHello = (MessageHello) messageCourantWithIP.getMessage();
 			RemoteApp ra = new RemoteApp(messageCourantWithIP.getIp(), messageHello.getNickName());
-			if(this.alreadyExist(ra)){
-				ra.setNickName(ra.getNickname()+" - 1");
-			}
-			this.remoteUsers.add(ra);
-			this.oneMoreUser(ra);
-			System.out.println(this.remoteUsers);
-			if (!messageHello.isReqReply()) {
-				System.out.println(messageHello.getNickName() + " répond à ma connexion");
-			}
-			if (messageHello.isReqReply()) {
-				System.out.println(messageHello.getNickName() + " vient de se connecter");
-				this.udpSender.sendHello(messageCourantWithIP.getIp(), this.user.getNickname(), false);
+			if(!(ra.getNickname().equals(this.user.getNickname()))){
+				if(this.alreadyExist(ra)){
+					ra.setNickName(ra.getNickname()+" - 1");
+				}
+				this.remoteUsers.add(ra);
+				this.oneMoreUser(ra);
+				System.out.println(this.remoteUsers);
+				if (!messageHello.isReqReply()) {
+					System.out.println(messageHello.getNickName() + " répond à ma connexion");
+				}
+				if (messageHello.isReqReply()) {
+					System.out.println(messageHello.getNickName() + " vient de se connecter");
+					this.udpSender.sendHello(messageCourantWithIP.getIp(), this.user.getNickname(), false);
+				}
 			}
 			break;
 		case BYEMESSAGERECEIVED:
