@@ -1,6 +1,7 @@
 package app.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import app.MainApp;
 import chatNI.RemoteAppsListener;
@@ -13,12 +14,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import remoteApp.RemoteApp;
 
 public class ChatScreenController implements RemoteAppsListener {
 	private ObservableList<String> listePseudos = FXCollections.observableArrayList();
+	private ArrayList<RemoteApp> remoteApps;
+	private ArrayList<Tab> tabsList;
 	@FXML
 	private ListView<String> usersList;
 	@FXML
@@ -32,6 +33,8 @@ public class ChatScreenController implements RemoteAppsListener {
      * The constructor is called before the initialize() method.
      */
     public ChatScreenController() {
+    	this.remoteApps = new ArrayList<RemoteApp>();
+    	this.tabsList = new ArrayList<Tab>();
     }
 
 	/**
@@ -57,6 +60,7 @@ public class ChatScreenController implements RemoteAppsListener {
 
 	@Override
 	public void aUserHasConnected(RemoteApp user) {
+		this.remoteApps.add(user);
 		System.err.println(user.getNickname() + " s'est connecté");
 		this.listePseudos.add(user.getNickname());
 		this.usersList.setItems(listePseudos);
@@ -64,14 +68,25 @@ public class ChatScreenController implements RemoteAppsListener {
 
 	@Override
 	public void aUserHasDisconnected(RemoteApp user) {
+		this.remoteApps.remove(user);
 		this.listePseudos.remove(user.getNickname());
 		this.usersList.setItems(listePseudos);
+	}
+	
+	public boolean aTabWithThisNameAlreadyExists(String name) {
+		boolean ret = false;
+		for (Tab tab : this.tabsList) {
+			if (tab.getText().equals(name)) {
+				ret = true;
+			}
+		}
+		return ret;
 	}
 	
 	@FXML
 	public void handleMouseClick(MouseEvent arg0) {
 		String name = this.usersList.getSelectionModel().getSelectedItem();
-		if (name!=null && !name.equals("")) {
+		if (name!=null && !name.equals("") && !aTabWithThisNameAlreadyExists(name)) {
 			try {
 				Tab t = new Tab();
 				t.setText(this.usersList.getSelectionModel().getSelectedItem());
@@ -81,7 +96,12 @@ public class ChatScreenController implements RemoteAppsListener {
 		         AnchorPane tabPane;
 				tabPane = (AnchorPane) loader.load();
 				
+				// Give the controller access to the chat screen controller.
+			    CommunicationTabController controller = loader.getController();
+			    controller.setChatScreenCtrlr(this);
+				
 				t.setContent(tabPane);
+				this.tabsList.add(t);
 				//t.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
 				this.tabPane.getTabs().add(t);
 			    System.out.println("clicked on " + this.usersList.getSelectionModel().getSelectedItem());

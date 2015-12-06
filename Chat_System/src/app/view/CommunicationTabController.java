@@ -1,19 +1,20 @@
 package app.view;
 
-import app.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import user.User;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 
 public class CommunicationTabController {
 	@FXML
-	private TextField nickName;
+	private TextArea displayingArea;
 	@FXML
-	private Button connectionButton;
+	private TextArea writingArea;
+	@FXML
+	private Button sendButton;
 
 	// Reference to the main application.
-	private MainApp mainApp;
+	private ChatScreenController chatScreenCtrlr;
 
 	/**
      * The constructor.
@@ -37,9 +38,8 @@ public class CommunicationTabController {
 	 * 
 	 * @param mainApp
 	 */
-	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-
+	public void setChatScreenCtrlr(ChatScreenController chatScreen) {
+		this.chatScreenCtrlr = chatScreen;
 		// Add observable list data to the table
 		//personTable.setItems(mainApp.getPersonData());
 	}
@@ -48,16 +48,17 @@ public class CommunicationTabController {
 	 * Called when the user clicks on the send button.
 	 */
 	@FXML
-	private void handleConnection() {
-		String pseudo = this.nickName.getText();
-		if (pseudo != null && !pseudo.equals("")) {
-			User user = new User(pseudo);
-			this.mainApp.setUser(user);
-			//Un fois que l'utilisateur a été créé dans la main ap, on peut appeler la méthode de connection
-			this.mainApp.connect();
-		}
-		else {
-			
+	public void handleMouseClickOnSend(MouseEvent arg0) {
+		String text = this.writingArea.getText();
+		if (text != null) {
+			String texteDejaAffiche = this.displayingArea.getText();
+			if (texteDejaAffiche == null || texteDejaAffiche.equals("")) {
+				this.displayingArea.setText(text);
+			}
+			else {
+				this.displayingArea.setText(texteDejaAffiche + "\n" + text);
+			}
+			this.writingArea.setText(null);
 		}
 	}
 }

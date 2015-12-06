@@ -1,8 +1,5 @@
 package app;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import app.view.ChatScreenController;
 import app.view.ConnectionScreenController;
@@ -14,7 +11,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import remoteApp.RemoteApp;
 import user.User;
 
 
