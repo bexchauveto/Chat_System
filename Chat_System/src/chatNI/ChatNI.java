@@ -31,13 +31,13 @@ public class ChatNI implements Runnable, NewMessageListener {
     private final EventListenerList listeners = new EventListenerList();
     
     // Pour la simulation d'affichagede la liste d'utilisateurs, à enlever par la suite
-    /*public void setRemoteUsers(ArrayList<RemoteApp> remoteUsers) {
+    public void setRemoteUsers(ArrayList<RemoteApp> remoteUsers) {
 		this.remoteUsers = remoteUsers;
 		this.oneMoreUser(remoteUsers.get(0));
 	}
     public void removeRemoteUsers() {
 		this.oneLessUser(remoteUsers.get(0));
-	}*/
+	}
     //FIn simu
 
 	public void addRemoteAppsListener(RemoteAppsListener listener) {
@@ -111,7 +111,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 		
 		while(true) {
 			//System.out.println(this.udpReceiver.isReceptionMessage());
-			System.out.println("");
+			//System.out.println("");
 		}
 	}
 	

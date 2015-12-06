@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import user.User;
 
-public class ConnectionScreenController {
+public class CommunicationTabController {
 	@FXML
 	private TextField nickName;
 	@FXML
@@ -19,7 +19,7 @@ public class ConnectionScreenController {
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public ConnectionScreenController() {
+    public CommunicationTabController() {
 
     }
 
@@ -45,7 +45,7 @@ public class ConnectionScreenController {
 	}
 	
 	/**
-	 * Called when the user clicks on the connect button.
+	 * Called when the user clicks on the send button.
 	 */
 	@FXML
 	private void handleConnection() {
