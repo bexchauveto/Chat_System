@@ -66,16 +66,36 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 		user.addNewMessageNormalReceivedListener(this);
 		this.remoteApps.add(user);
 		System.err.println(user.getNickname() + " s'est connecté");
-		this.listePseudos.add(user.getNickname());
-		this.usersList.setItems(listePseudos);
+		
+		
+		ObservableList<String> tempObservableList = this.listePseudos;
+		ListView<String> tempListView = this.usersList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+            	tempObservableList.add(user.getNickname());
+            	tempListView.setItems(tempObservableList);
+            }
+        });
+		this.listePseudos = tempObservableList;
+		this.usersList = tempListView;
 	}
 
 	@Override
 	public void aUserHasDisconnected(RemoteApp user) {
 		user.removeNewMessageNormalReceivedListener(this);
 		this.remoteApps.remove(user);
-		this.listePseudos.remove(user.getNickname());
-		this.usersList.setItems(listePseudos);
+		System.err.println(user.getNickname() + " s'est déconnecté");
+		
+		ObservableList<String> tempObservableList = this.listePseudos;
+		ListView<String> tempListView = this.usersList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+            	tempObservableList.remove(user.getNickname());
+            	tempListView.setItems(tempObservableList);
+            }
+        });
+		this.listePseudos = tempObservableList;
+		this.usersList = tempListView;
 	}
 	
 	public boolean aTabWithThisNameAlreadyExists(String name) {
