@@ -87,6 +87,7 @@ public class MainApp extends Application {
 			rootLayout.setCenter(chatScreen);
 
 			this.chat.addRemoteAppsListener(controller);
+			this.chat.ajouterToutLeMonde();
         } catch (IOException e) {
             e.printStackTrace();
         }

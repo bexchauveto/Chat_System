@@ -75,6 +75,10 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	public void sendMessage(String mess, RemoteApp remote) {
 		this.chatScreenCtrlr.sendMessage(mess, remote);
 	}
+	
+	public void afficherPremierMessage(String message) {
+		this.displayingArea.setText(message);
+	}
 
 	@Override
 	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, String message) {

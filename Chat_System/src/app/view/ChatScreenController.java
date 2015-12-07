@@ -180,6 +180,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			    
 			    controller.setRemoteAppCorrespondant(ra);
 			    controller.setChatScreenCtrlr(this);
+			    controller.afficherPremierMessage(message);
 				
 				t.setContent(anchorPane);
 				this.tabsList.add(t);
