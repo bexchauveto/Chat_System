@@ -27,6 +27,11 @@ public class MainApp extends Application {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public User getUser() {
+		return this.user;
+	}
+
 
 	/**
      * Initializes the root layout.

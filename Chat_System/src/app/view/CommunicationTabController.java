@@ -1,5 +1,7 @@
 package app.view;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javafx.fxml.FXML;
@@ -59,7 +61,7 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	 */
 	@FXML
 	public void handleMouseClickOnSend(MouseEvent arg0) {
-		String text = this.writingArea.getText();
+		String text = this.chatScreenCtrlr.getUserNickName()  + " [" + LocalDate.now().toString() + " " + LocalTime.now().toString() + "] : " + this.writingArea.getText();
 		if (text != null) {
 			this.sendMessage(text, this.remoteAppCorrespondant);
 			String texteDejaAffiche = this.displayingArea.getText();
@@ -77,18 +79,18 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 		this.chatScreenCtrlr.sendMessage(mess, remote);
 	}
 	
-	public void afficherPremierMessage(String message) {
-		this.displayingArea.setText(message);
+	public void afficherPremierMessage(Message message) {
+		this.displayingArea.setText(this.remoteAppCorrespondant.getNickname() + " [" + ((MessageNormal)message).getDateReception().toString() + " " + ((MessageNormal)message).getTimeReception().toString() + "] : " + ((MessageNormal)message).getMessage());
 	}
 
 	@Override
 	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, Message message) {
 		String texteDejaAffiche = this.displayingArea.getText();
 		if (texteDejaAffiche == null || texteDejaAffiche.equals("")) {
-			this.displayingArea.setText(ra.getNickname() + "[" + ((MessageNormal)message).getDateReception().toString() + " " + ((MessageNormal)message).getTimeReception().toString() + "] : " + ((MessageNormal)message).getMessage());
+			this.displayingArea.setText(ra.getNickname() + " [" + ((MessageNormal)message).getDateReception().toString() + " " + ((MessageNormal)message).getTimeReception().toString() + "] : " + ((MessageNormal)message).getMessage());
 		}
 		else {
-			this.displayingArea.setText(texteDejaAffiche + "\n" + message);
+			this.displayingArea.setText(texteDejaAffiche + "\n" + ra.getNickname() + " [" + ((MessageNormal)message).getDateReception().toString() + " " + ((MessageNormal)message).getTimeReception().toString() + "] : " + ((MessageNormal)message).getMessage());
 		}
 	}
 	

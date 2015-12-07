@@ -181,7 +181,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			    
 			    controller.setRemoteAppCorrespondant(ra);
 			    controller.setChatScreenCtrlr(this);
-			    controller.afficherPremierMessage(((MessageNormal)message).getMessage());
+			    controller.afficherPremierMessage(message);
 				
 				t.setContent(anchorPane);
 				this.tabsList.add(t);
@@ -203,5 +203,9 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			}
 		}
 		
+	}
+	
+	public String getUserNickName(){
+		return this.mainApp.getUser().getNickname();
 	}
 }
