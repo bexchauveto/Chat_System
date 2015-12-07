@@ -16,6 +16,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import messages.Message;
+import messages.MessageNormal;
 import remoteApp.NewMessageNormalReceivedListener;
 import remoteApp.RemoteApp;
 
@@ -163,7 +164,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 	}
 
 	@Override
-	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, String message) {
+	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, Message message) {
 		if (!this.aTabWithThisNameAlreadyExists(ra.getNickname())) {
 			try {
 				System.out.println("J'ai reçu un message");
@@ -180,7 +181,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			    
 			    controller.setRemoteAppCorrespondant(ra);
 			    controller.setChatScreenCtrlr(this);
-			    controller.afficherPremierMessage(message);
+			    controller.afficherPremierMessage(((MessageNormal)message).getMessage());
 				
 				t.setContent(anchorPane);
 				this.tabsList.add(t);

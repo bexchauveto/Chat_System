@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import messages.Message;
-import messages.MessageNormal;
 
 public class RemoteApp {
 	private InetAddress ip;
@@ -29,7 +28,7 @@ public class RemoteApp {
 
     public void nouveauMessageAjoute(Message message) {
 		for(NewMessageNormalReceivedListener listener : getNewMessageNormalReceivedListeners()) {
-            listener.thisNewNormalMessageHasBeenReceived(this, ((MessageNormal)message).getMessage());
+            listener.thisNewNormalMessageHasBeenReceived(this, message);
         }
 	}
 

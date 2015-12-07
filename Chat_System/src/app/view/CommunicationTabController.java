@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import messages.Message;
+import messages.MessageNormal;
 import remoteApp.NewMessageNormalReceivedListener;
 import remoteApp.RemoteApp;
 
@@ -81,10 +82,10 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	}
 
 	@Override
-	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, String message) {
+	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, Message message) {
 		String texteDejaAffiche = this.displayingArea.getText();
 		if (texteDejaAffiche == null || texteDejaAffiche.equals("")) {
-			this.displayingArea.setText(message);
+			this.displayingArea.setText(ra.getNickname() + "[" + ((MessageNormal)message).getDateReception().toString() + " " + ((MessageNormal)message).getTimeReception().toString() + "] : " + ((MessageNormal)message).getMessage());
 		}
 		else {
 			this.displayingArea.setText(texteDejaAffiche + "\n" + message);
