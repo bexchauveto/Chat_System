@@ -102,15 +102,6 @@ public class ChatNI implements Runnable, NewMessageListener {
 		new Thread(this.udpReceiver).start();
 		new Thread(this.tcpServer).start();
 		byte [] bc = {(byte)255,(byte)255,(byte)255,(byte)255};
-		//byte [] ip = {(byte)192,(byte)168,(byte)43,(byte)177};
-		try {
-			RemoteApp ra = new RemoteApp(InetAddress.getByAddress(bc),"Tout le monde");
-			this.remoteUsers.add(ra);
-			this.oneMoreUser(ra);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		try {
 			this.udpSender.sendHello(InetAddress.getByAddress(bc), this.user.getNickname(), true);
 			//this.udpSender.sendHello(InetAddress.getByName("localhost"), this.user.getNickname(), true);
@@ -175,7 +166,7 @@ public class ChatNI implements Runnable, NewMessageListener {
 			RemoteApp ra = new RemoteApp(messageCourantWithIP.getIp(), messageHello.getNickName());
 			if(!(ra.getNickname().equals(this.user.getNickname()))){
 				if(this.alreadyExist(ra)){
-					ra.setNickName(ra.getNickname()+" - 1");
+					ra.setNickName(ra.getNickname()+" - "+(int)(Math.random()*100));
 				}
 				this.remoteUsers.add(ra);
 				this.oneMoreUser(ra);
