@@ -65,6 +65,18 @@ public class ChatNI implements Runnable, NewMessageListener {
         }
 	}
 
+    public void ajouterToutLeMonde(){
+    	byte [] bc = {(byte)255,(byte)255,(byte)255,(byte)255};
+		try {
+			RemoteApp ra = new RemoteApp(InetAddress.getByAddress(bc),"Tout le monde");
+			this.remoteUsers.add(ra);
+			this.oneMoreUser(ra);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
     public boolean alreadyExist(RemoteApp remote){
     	for(int i = 0; i < this.remoteUsers.size(); i++){
     		if(this.remoteUsers.get(i).getNickname().equals(remote.getNickname())){
@@ -91,6 +103,14 @@ public class ChatNI implements Runnable, NewMessageListener {
 		new Thread(this.tcpServer).start();
 		byte [] bc = {(byte)255,(byte)255,(byte)255,(byte)255};
 		//byte [] ip = {(byte)192,(byte)168,(byte)43,(byte)177};
+		try {
+			RemoteApp ra = new RemoteApp(InetAddress.getByAddress(bc),"Tout le monde");
+			this.remoteUsers.add(ra);
+			this.oneMoreUser(ra);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			this.udpSender.sendHello(InetAddress.getByAddress(bc), this.user.getNickname(), true);
 			//this.udpSender.sendHello(InetAddress.getByName("localhost"), this.user.getNickname(), true);
