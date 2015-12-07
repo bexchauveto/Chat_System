@@ -20,7 +20,7 @@ import messages.MessageNormal;
 import messages.MessageWithIP;
 
 public class UDPReceiver implements Runnable {
-	
+
 	private DatagramSocket socket;
 	private boolean receptionMessage = false;
 	private Message messageRecu;
@@ -30,23 +30,23 @@ public class UDPReceiver implements Runnable {
 	private static final int NORMALMESSAGERECEIVED = 2;
 	private static final int FILEREQUESTMESSAGERECEIVED = 3;
 	private static final int FILEREQUESTREPLYMESSAGERECEIVED = 4;
-	
-	
+
+
 	// un seul objet pour tous les types d'écouteurs
     private final EventListenerList listeners = new EventListenerList();
 
 	public void addNewMessageListener(NewMessageListener listener) {
         this.listeners.add(NewMessageListener.class, listener);
     }
- 
+
     public void removeNewMessageListener(NewMessageListener listener) {
         this.listeners.remove(NewMessageListener.class, listener);
     }
-    
+
     public NewMessageListener[] getNewMessageListeners() {
         return listeners.getListeners(NewMessageListener.class);
     }
-    
+
     protected void newMessageReceived() {
 		for(NewMessageListener listener : getNewMessageListeners()) {
             listener.aMessageHasBeenReceived();
@@ -61,7 +61,7 @@ public class UDPReceiver implements Runnable {
 		}
 		this.messagewithip = new MessageWithIP[10];
 	}
-	
+
 	public boolean isReceptionMessage() {
 		return receptionMessage;
 	}
@@ -69,12 +69,12 @@ public class UDPReceiver implements Runnable {
 	public void setReceptionMessage(boolean receptionMessage) {
 		this.receptionMessage = receptionMessage;
 	}
-	
+
 	public Message getMessageRecu() {
 		this.receptionMessage = false;
 		return this.messageRecu;
 	}
-	
+
 	public MessageWithIP getMessagewithip(int index) {
 		return messagewithip[index];
 	}
@@ -87,13 +87,13 @@ public class UDPReceiver implements Runnable {
 		int index = 0;
 		try {
 			DatagramPacket messageReceived = new DatagramPacket(buf, buf.length);
-			while (true) {
+			while (!Thread.currentThread().isInterrupted()) {
 				this.socket.receive(messageReceived);
-				String str = new String(messageReceived.getData(), 0, messageReceived.getLength(), Charset.forName("UTF-8")); 
+				String str = new String(messageReceived.getData(), 0, messageReceived.getLength(), Charset.forName("UTF-8"));
 				JSONObject jsonmes = new JSONObject(str);
 				//System.out.println(jsonmes);
 				typeMessageRecu = jsonmes.getInt("type");
-				
+
 				switch (typeMessageRecu) {
 				case HELLOMESSAGERECEIVED:
 					System.out.println("J'ai reçu un hello message dans UDPReceiver qui ressemble à ça : " + jsonmes);
@@ -131,13 +131,13 @@ public class UDPReceiver implements Runnable {
 		finally {
 			this.socket.close();
 		}
-		
-	}
-	
-	
-	
-	
 
-	
+	}
+
+
+
+
+
+
 
 }

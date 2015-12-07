@@ -124,9 +124,15 @@ public class ChatNI implements Runnable, NewMessageListener {
 	@Override
 	public void run() {
 
-		while(true) {
+		while(!Thread.currentThread().isInterrupted()) {
 			//System.out.println(this.udpReceiver.isReceptionMessage());
 			//System.out.println("");
+			/*try {
+				//wait(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 		}
 	}
 
