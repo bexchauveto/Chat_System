@@ -109,7 +109,9 @@ public class MainApp extends Application {
     
     @Override
     public void stop() {
-    	this.chat.disconnect();
+    	if (this.chat != null) {
+    		this.chat.disconnect();
+    	}
     }
 
 	/**

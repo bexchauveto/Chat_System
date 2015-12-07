@@ -13,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import messages.Message;
@@ -108,7 +110,6 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 		}
 		return ret;
 	}
-	
 	
 	@FXML
 	public void handleMouseClick(MouseEvent arg0) {

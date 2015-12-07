@@ -4,6 +4,8 @@ import app.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import user.User;
 
 public class ConnectionScreenController {
@@ -58,6 +60,13 @@ public class ConnectionScreenController {
 		}
 		else {
 			
+		}
+	}
+	
+	@FXML
+	private void handleEnterKeyPressed(KeyEvent event) {
+		if(event.getCode() == KeyCode.ENTER) {
+			this.handleConnection();
 		}
 	}
 }

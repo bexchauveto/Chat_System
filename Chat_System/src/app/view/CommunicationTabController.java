@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import messages.Message;
 import messages.MessageNormal;
@@ -54,6 +56,13 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	public void setRemoteAppCorrespondant(RemoteApp ra) {
 		this.remoteAppCorrespondant = ra;
 		this.remoteAppCorrespondant.addNewMessageNormalReceivedListener(this);
+	}
+	
+	@FXML
+	private void handleEnterKeyPressed(KeyEvent event) {
+		if(event.getCode() == KeyCode.ENTER) {
+			this.handleMouseClickOnSend(null);
+		}
 	}
 	
 	/**
