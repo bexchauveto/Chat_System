@@ -88,6 +88,12 @@ public class UDPReceiver implements Runnable {
 		try {
 			DatagramPacket messageReceived = new DatagramPacket(buf, buf.length);
 			while (!Thread.currentThread().isInterrupted()) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				this.socket.receive(messageReceived);
 				String str = new String(messageReceived.getData(), 0, messageReceived.getLength(), Charset.forName("UTF-8"));
 				JSONObject jsonmes = new JSONObject(str);
