@@ -61,9 +61,10 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	 */
 	@FXML
 	public void handleMouseClickOnSend(MouseEvent arg0) {
-		String text = this.chatScreenCtrlr.getUserNickName()  + " [" + LocalDate.now().toString() + " " + LocalTime.now().toString() + "] : " + this.writingArea.getText();
+		String text = this.writingArea.getText();
 		if (text != null) {
 			this.sendMessage(text, this.remoteAppCorrespondant);
+			text = this.chatScreenCtrlr.getUserNickName()  + " [" + LocalDate.now().toString() + " " + LocalTime.now().toString() + "] : " + text;
 			String texteDejaAffiche = this.displayingArea.getText();
 			if (texteDejaAffiche == null || texteDejaAffiche.equals("")) {
 				this.displayingArea.setText(text);
