@@ -111,6 +111,16 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 		return ret;
 	}
 	
+	public Tab getTabWithThisName(String name) {
+		Tab ret = null;
+		for (Tab tab : this.tabsList) {
+			if (tab.getText().equals(name)) {
+				ret = tab;
+			}
+		}
+		return ret;
+	}
+	
 	@FXML
 	public void handleMouseClick(MouseEvent arg0) {
 		String name = this.usersList.getSelectionModel().getSelectedItem();
@@ -154,6 +164,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 				e.printStackTrace();
 			}
 		}
+		this.tabPane.getSelectionModel().select(getTabWithThisName(name));
 	}
 	
 	public void sendMessage(String mess, RemoteApp remote) {
