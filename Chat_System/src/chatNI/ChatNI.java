@@ -111,7 +111,8 @@ public class ChatNI implements Runnable, NewMessageListener {
 	}
 
 	public void disconnect() {
-		for(int i = 0; i < this.remoteUsers.size(); i++) {
+		// On commence à 1 afin de ne par dire aurevoir en BC en plus !
+		for(int i = 1; i < this.remoteUsers.size(); i++) {
 			this.udpSender.sendBye(this.remoteUsers.get(i).getIp());
 		}
 	}
