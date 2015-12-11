@@ -2,7 +2,6 @@ package app.view;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import messages.Message;
 import messages.MessageNormal;
 import remoteApp.NewMessageNormalReceivedListener;
@@ -41,7 +41,7 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	 */
 	@FXML
 	private void initialize() {
-		
+
 	}
 
 	/**
@@ -72,6 +72,8 @@ public class CommunicationTabController implements NewMessageNormalReceivedListe
 	public void handleMouseClickOnSend(MouseEvent arg0) {
 		String text = this.writingArea.getText();
 		if (text != null) {
+			text = text.replaceAll("\\n", "");
+			text = text.replaceAll("\\r", "");
 			this.sendMessage(text, this.remoteAppCorrespondant);
 			text = this.chatScreenCtrlr.getUserNickName()  + " [" + LocalDate.now().toString() + " " + LocalTime.now().toString() + "] : " + text;
 			String texteDejaAffiche = this.displayingArea.getText();

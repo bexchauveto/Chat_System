@@ -8,17 +8,17 @@ import chatNI.RemoteAppsListener;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import messages.Message;
-import messages.MessageNormal;
 import remoteApp.NewMessageNormalReceivedListener;
 import remoteApp.RemoteApp;
 
@@ -104,7 +104,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 	public boolean aTabWithThisNameAlreadyExists(String name) {
 		boolean ret = false;
 		for (Tab tab : this.tabsList) {
-			if (tab.getText().equals(name)) {
+			if (((Label)tab.getGraphic()).getText().equals(name)) {
 				ret = true;
 			}
 		}
@@ -114,21 +114,33 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 	public Tab getTabWithThisName(String name) {
 		Tab ret = null;
 		for (Tab tab : this.tabsList) {
-			if (tab.getText().equals(name)) {
+			if (((Label)tab.getGraphic()).getText().equals(name)) {
 				ret = tab;
 			}
 		}
 		return ret;
 	}
 	
+	public void ongletEnOrange(Tab t) {
+		t.getStyleClass().add("tabstyle");
+		this.tabPane.getStylesheets().add(getClass().getResource("NewTab.css").toExternalForm());
+		System.out.println("Je passe l'onglet "+t.getText()+" en orange.");
+	}
+	
+	public void ongletEnGris(Tab t) {
+		t.getStyleClass().clear();
+		t.getStyleClass().addAll("tab");
+	}
+	
+	//Gère le clique sur la liste
 	@FXML
 	public void handleMouseClick(MouseEvent arg0) {
 		String name = this.usersList.getSelectionModel().getSelectedItem();
 		if (name!=null && !name.equals("") && !aTabWithThisNameAlreadyExists(name)) {
 			try {
 				Tab t = new Tab();
-				t.setText(this.usersList.getSelectionModel().getSelectedItem());
-				
+				Label tabLabel = new Label(this.usersList.getSelectionModel().getSelectedItem());
+				t.setGraphic(tabLabel);				
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(MainApp.class.getResource("view/CommunicationTab.fxml"));
 				AnchorPane anchorPane;
@@ -147,6 +159,19 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			    controller.setChatScreenCtrlr(this);
 				
 				t.setContent(anchorPane);
+				
+				/**
+				 * On lui rajouter le fait que si on clique sur l'onglet il doit repaser en gris
+				 */
+				tabLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				    @Override
+				    public void handle(MouseEvent mouseEvent) {
+				        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+				        	ongletEnGris(t);
+				       }
+				    }
+				});
+				
 				this.tabsList.add(t);
 				
 				TabPane tempTabPane = this.tabPane;
@@ -164,6 +189,7 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 				e.printStackTrace();
 			}
 		}
+		this.ongletEnGris(getTabWithThisName(name));
 		this.tabPane.getSelectionModel().select(getTabWithThisName(name));
 	}
 	
@@ -179,9 +205,13 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 	public void thisNewNormalMessageHasBeenReceived(RemoteApp ra, Message message) {
 		if (!this.aTabWithThisNameAlreadyExists(ra.getNickname())) {
 			try {
-				System.out.println("J'ai reçu un message");
 				Tab t = new Tab();
-				t.setText(ra.getNickname());
+				System.out.println("J'ai reçu un message");
+				//t.setText(ra.getNickname());
+				Label tabLabel = new Label(ra.getNickname());
+				t.setGraphic(tabLabel);
+				
+				this.ongletEnOrange(t);
 				
 				FXMLLoader loader = new FXMLLoader();
 		        loader.setLocation(MainApp.class.getResource("view/CommunicationTab.fxml"));
@@ -196,6 +226,19 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			    controller.afficherPremierMessage(message);
 				
 				t.setContent(anchorPane);
+				
+				/**
+				 * On lui rajouter le fait que si on clique sur l'onglet il doit repaser en gris
+				 */
+				tabLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				    @Override
+				    public void handle(MouseEvent mouseEvent) {
+				        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+				        	ongletEnGris(t);
+				       }
+				    }
+				});
+				
 				this.tabsList.add(t);
 				
 				
@@ -212,6 +255,13 @@ public class ChatScreenController implements RemoteAppsListener, NewMessageNorma
 			} catch (IOException e) {
 				System.err.println("Could not load the communication tab FXML file !");
 				e.printStackTrace();
+			}
+		}
+		else {
+			Tab t = getTabWithThisName(ra.getNickname());
+			// On ne passe en orange que si ce n'est pas l'onglet sélectionné
+			if (!this.tabPane.getSelectionModel().getSelectedItem().equals(t)) {
+				this.ongletEnOrange(t);
 			}
 		}
 		
