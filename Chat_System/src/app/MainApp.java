@@ -18,16 +18,16 @@ import user.User;
 
 
 public class MainApp extends Application {
-	
+
 	private Stage primaryStage;
     private BorderPane rootLayout;
     private User user;
     private ChatNI chat;
-    
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public User getUser() {
 		return this.user;
 	}
@@ -51,7 +51,7 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Shows the person overview inside the root layout.
      */
@@ -65,7 +65,7 @@ public class MainApp extends Application {
 			 // Give the controller access to the main app.
 		    ConnectionScreenController controller = loader.getController();
 		    controller.setMainApp(this);
-			    
+
 			 // Set person overview into the center of root layout.
 			rootLayout.setCenter(connectionScreen);
 
@@ -73,7 +73,7 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Shows the person overview inside the root layout.
      */
@@ -83,11 +83,11 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ChatScreen.fxml"));
             SplitPane chatScreen = (SplitPane) loader.load();
-            
+
 			 // Give the controller access to the main app.
 		    ChatScreenController controller = loader.getController();
 		    controller.setMainApp(this);
-			    
+
 			 // Set person overview into the center of root layout.
 			rootLayout.setCenter(chatScreen);
 
@@ -97,7 +97,7 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-	
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -106,12 +106,13 @@ public class MainApp extends Application {
         this.initRootLayout();
         this.showConnectionScreen();
     }
-    
+
     @Override
     public void stop() {
     	if (this.chat != null) {
     		this.chat.disconnect();
     	}
+    	System.exit(0);
     }
 
 	/**
@@ -126,16 +127,16 @@ public class MainApp extends Application {
 			Thread.currentThread().sleep(100);
 			c.sendHello(InetAddress.getByName("localhost"), "Georges", true);
 			//c.sendHello(InetAddress.getByAddress(ip), "Georges");
-			
+
 			c.sendMessageNormal(InetAddress.getByName("localhost"), "Coucou ! Tu veux voir mon fichier ?");
 			Thread.currentThread().sleep(1000);
-			
+
 			c.sendFileRequest(InetAddress.getByName("localhost"), "penis.png");
 			Thread.currentThread().sleep(1000);
-			
+
 			c.sendFileRequestReply(InetAddress.getByName("localhost"), true);
-			
-			
+
+
 			Thread.currentThread().sleep(2000);
 			c.sendBye(InetAddress.getByName("localhost"));
 			//c.sendBye(InetAddress.getByAddress(ip), "Georges");
@@ -146,23 +147,23 @@ public class MainApp extends Application {
 			System.out.println("Could not sleep.");
 			e.printStackTrace();
 		}*/
-		
-		
-		
+
+
+
 		launch(args);
 	}
-	
+
 	// Appelé par handleConnection() dans ConnectionScreenController quand on appuie sur le bouton de connexion
 	public void connect() {
 		this.chat = new ChatNI(this.user);
 		this.showChatScreen();
-		
+
 		//Simulation de connection et déconnection pour l'affichage de la liste
 		/*ArrayList<RemoteApp> lol = new ArrayList<RemoteApp>();
 		try {
 			lol.add(new RemoteApp(InetAddress.getByName("localhost"), "Georges"));
 			this.chat.setRemoteUsers(lol);
-			
+
 			/*
 			 * Permet de voir que ça n'apparait pas dans la liste (bon meêm thread donc on le vois pas en direct mais osef
 			 * Thread.sleep(3000);
@@ -172,11 +173,11 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}*/
 	}
-	
+
 	public void sendMessage(String mess, RemoteApp remote) {
 		this.chat.sendMessage(mess, remote);
 	}
-	
+
 	public ArrayList<Message> getAllMessageConversation(RemoteApp remote) {
 		return this.user.getAllMessageConversation(remote);
 	}
